@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :tell1story, Tell1story.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "1234",
   hostname: "localhost",
   database: "tell1story_dev",
   stacktrace: true,

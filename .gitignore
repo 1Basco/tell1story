@@ -32,3 +32,6 @@ tell1story-*.tar
 npm-debug.log
 /assets/node_modules/
 
+#ignore secrets
+**/*.secret.exs
+
