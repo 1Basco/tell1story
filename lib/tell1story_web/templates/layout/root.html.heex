@@ -11,18 +11,15 @@
   </head>
   <body>
     <header>
-      <section class="container">
-        <nav>
-          <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
+      <section class="w-full">
+        <nav class="h-12 bg-teal-500">
+          <ul class="flex pt-3">
+            <li class="border-dashed border-cyan-800"><a href="https://hexdocs.pm/phoenix/overview.html" class="bg-neutral-300 text-blue-500 rounded-lg p-1 px-2 m-3">Get Started</a></li>
             <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
+              <li class="border-dashed border-cyan-800"><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "bg-neutral-300 text-blue-500 rounded-lg p-1 px-2 m-3"%></li>
             <% end %>
           </ul>
         </nav>
-        <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src={Routes.static_path(@conn, "/images/phoenix.png")} alt="Phoenix Framework Logo"/>
-        </a>
       </section>
     </header>
     <%= @inner_content %>
