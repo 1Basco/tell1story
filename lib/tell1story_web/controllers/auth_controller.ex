@@ -4,6 +4,7 @@ defmodule Tell1storyWeb.AuthController do
 
   alias Ueberauth.Strategy.Helpers
   alias Tell1story.Users
+  alias Tell1storyWeb.Plug.Auth
 
   def request(conn, _params) do
     render(conn, "request.html", callback_url: Helpers.callback_url(conn))
@@ -27,8 +28,7 @@ defmodule Tell1storyWeb.AuthController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Successfully authenticated.")
-        |> put_session(:current_user, user)
-        |> configure_session(renew: true)
+        |> Auth.put_current_user(user)
         |> redirect(to: "/")
 
       {:error, reason} ->
@@ -47,41 +47,7 @@ defmodule Tell1storyWeb.AuthController do
   #   )
   # end
 
-  # def callback(conn, %{"code" => _code, "state" => _state}) do
-  #   case Ueberauth.Strategy.Discord.callback(%{ueberauth_discord: %{callback_params: conn.params}}) do
-  #     {:ok,
-  #      %{
-  #        "info" => %{
-  #          "id" => discord_id,
-  #          "username" => username,
-  #          "discriminator" => discriminator,
-  #          "avatar" => avatar,
-  #          "email" => email
-  #        },
-  #        "credentials" => %{
-  #          "token" => access_token,
-  #          "refresh_token" => refresh_token,
-  #          "expires" => expires_at
-  #        }
-  #      }} ->
-  #       # Find or create the user based on the Discord ID
-  #       user =
-  #         Repo.get_by(User, discord_id: discord_id) ||
-  #           User.changeset(%User{}, %{
-  #             discord_id: discord_id,
-  #             username: username,
-  #             discriminator: discriminator,
-  #             avatar: avatar,
-  #             email: email,
-  #             access_token: access_token,
-  #             refresh_token: refresh_token
-  #           })
-  #           |> Repo.insert()
-
-  #       # Store the user in the session
-  #       conn
-  #       |> put_session(:current_user, user)
-  #       |> redirect(to: "/")
-  #   end
-  # end
+  def request(conn, _params) do
+    render(conn, "request.html", callback_url: Helpers.callback_url(conn))
+  end
 end

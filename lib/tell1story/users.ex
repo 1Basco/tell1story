@@ -7,35 +7,14 @@ defmodule Tell1story.Users do
 
   alias Ueberauth.Auth
 
-  # def find_or_create(%{Auth} = ) do
-  #   user = Repo.get(User, attrs)
-
-  #   case user do
-  #     nil -> Repo.insert(%User{} |> Map.merge(attrs))
-  #     user -> user
-  #   end
-  # end
-
-  # def find_or_create(%Auth{provider: :identity} = auth) do
-  #   case validate_pass(auth.credentials) do
-  #     :ok ->
-  #       {:ok, basic_info(auth)}
-
-  #     {:error, reason} ->
-  #       {:error, reason}
-  #   end
-  # end
-
   def find_or_create(%Auth{} = auth) do
     auth
     |> user_exists?()
     |> handle_user()
-
-    # |> set_user
   end
 
   defp user_exists?(auth) do
-    user = Repo.get(User, auth.uid)
+    user = Repo.get_by(User, discord_id: auth.uid)
 
     case user do
       nil -> {:error, auth}
@@ -48,7 +27,8 @@ defmodule Tell1story.Users do
   end
 
   defp handle_user({:ok, user}) do
-    # TODO: update credentials
+    safe_user = get_user_safe_by_id(user.id)
+    {:ok, safe_user}
   end
 
   defp create_user(auth) do
@@ -56,7 +36,14 @@ defmodule Tell1story.Users do
       auth
       |> basic_info()
 
-    Repo.insert(%User{} |> Map.merge(attrs))
+    case Repo.insert(%User{} |> Map.merge(attrs)) do
+      {:ok, user} ->
+        user
+
+      {:error, _} ->
+        nil
+        # handle error here
+    end
   end
 
   defp basic_info(auth) do
@@ -69,5 +56,23 @@ defmodule Tell1story.Users do
       access_token: auth.credentials.token,
       refresh_token: auth.credentials.refresh_token
     }
+  end
+
+  def get_user_safe_by_id(user_id) when is_nil(user_id), do: nil
+
+  def get_user_safe_by_id(user_id) do
+    user = Repo.get_by(User, id: user_id)
+
+    case user do
+      nil ->
+        nil
+
+      user ->
+        %{
+          id: user.id,
+          username: user.username,
+          avatar: user.avatar
+        }
+    end
   end
 end

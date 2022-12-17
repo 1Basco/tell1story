@@ -8,6 +8,7 @@ defmodule Tell1storyWeb.Router do
     plug :put_root_layout, {Tell1storyWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug Tell1storyWeb.Plug.Auth
   end
 
   pipeline :api do
