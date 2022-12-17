@@ -17,7 +17,13 @@ defmodule Tell1storyWeb.Router do
   scope "/", Tell1storyWeb do
     pipe_through :browser
 
-    live "/", PageLive
+    get "/", PageController, :index
+  end
+
+  scope "/auth", Tell1storyWeb do
+    pipe_through :browser
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
   end
 
   # Other scopes may use custom stacks.
