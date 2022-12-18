@@ -11,27 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
   <body>
-  <header class="mb-2 p-2 bg-teal-700 flex flex-row justify-between"> 
-  <div class="flex">
-    <a href="/" class="block px-4 py-2 font-bold text-cyan-300 hover:text-cyan-600">Home</a>
-    <a href="/rooms" class="block px-4 py-2 font-bold  text-cyan-300 hover:text-cyan-600 ml-4">Rooms</a>
-    <a href="/favorites" class="block px-4 py-2 font-bold  text-cyan-300 hover:text-cyan-600 ml-4">Favorites</a>
-  </div>
-      <div class="flex items-center justify-end bg-discord-gray text-black" >
-      <%= if @current_user do %>
-        <div class="flex items-center">
-          <img src={@current_user.avatar} alt="User Avatar" class="w-12 h-12 rounded-full">
-          <p class="ml-4 font-bold  text-cyan-300"><%= @current_user.username %></p>
-        </div>
-      <% else %>
-        <a id="login" href="/auth/discord" class="bg-discord-color  text-lg px-3 py-2 rounded-md font-bold flex items-center space-x-4 hover:bg-sky-900 transition duration-75">
-            <i class="fa-brands fa-discord text-2xl"></i>
-            <span>Logue pelo Discord</span>
-        </a>
-      <% end %>
-
-    </div>
-  </header>
     <%= @inner_content %>
   </body>
 </html>
