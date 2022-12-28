@@ -21,9 +21,9 @@ defmodule Tell1storyWeb.Plug.Auth do
   def logged_in_user(conn = %{assigns: %{current_user: %{}}}, _), do: conn
 
   # not_logged
-  def logged_in_user(conn = %{privete: %{phoenix_format: "json"}}, _opts) do
+  def logged_in_user(conn = %{private: %{phoenix_format: "json"}}, _opts) do
     conn
-    |> put_status(:unathorized)
+    |> put_status(:unauthorized)
     |> halt()
     |> json(%{error: "unauthorized"})
   end
@@ -37,11 +37,13 @@ defmodule Tell1storyWeb.Plug.Auth do
 
   def put_current_user(conn, user) do
     token = user && Tell1storyWeb.Token.sign(%{id: user.id})
+    updated_user = Users.update_or_insert_token(user, token)
 
     conn
-    |> assign(:current_user, user)
+    |> assign(:current_user, updated_user)
     |> assign(:user_token, token)
-    |> put_session(:user_id, user && user.id)
+    |> put_session(:user_id, updated_user && updated_user.id)
+    |> put_session(:user_token, updated_user && token)
     |> configure_session(renew: true)
     |> put_req_header("authorization", "Bearer #{token}")
   end

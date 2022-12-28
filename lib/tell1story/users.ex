@@ -1,4 +1,7 @@
 defmodule Tell1story.Users do
+  @moduledoc """
+    Users Context
+  """
   import Ecto.Query, warn: false
 
   alias Tell1story.Repo
@@ -56,6 +59,31 @@ defmodule Tell1story.Users do
       access_token: auth.credentials.token,
       refresh_token: auth.credentials.refresh_token
     }
+  end
+
+  def get_user_by_session_token(token) do
+    user = Repo.get_by(User, token: token)
+
+    case user do
+      nil ->
+        nil
+
+      user ->
+        %{
+          id: user.id,
+          username: user.username,
+          avatar: user.avatar
+        }
+    end
+  end
+
+  def update_or_insert_token(user, token) do
+    if user do
+      full_user = Repo.get_by(User, id: user.id)
+      changeset = User.changeset(full_user, %{token: token})
+      Repo.update(changeset)
+      get_user_safe_by_id(user.id)
+    end
   end
 
   def get_user_safe_by_id(user_id) when is_nil(user_id), do: nil

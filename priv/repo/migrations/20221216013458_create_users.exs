@@ -10,6 +10,7 @@ defmodule Tell1story.Repo.Migrations.CreateUsers do
       add :email, :string
       add :access_token, :string
       add :refresh_token, :string
+      add :token, :string
 
       timestamps()
     end

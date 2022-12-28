@@ -1,4 +1,5 @@
 defmodule Tell1story.Users.User do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,6 +11,7 @@ defmodule Tell1story.Users.User do
     field :email, :string
     field :access_token, :string
     field :refresh_token, :string
+    field :token, :string
 
     timestamps()
   end
@@ -24,8 +26,9 @@ defmodule Tell1story.Users.User do
       :avatar,
       :email,
       :access_token,
-      :refresh_token
+      :refresh_token,
+      :token
     ])
-    |> validate_required([:discord_id, :username, :discriminator])
+    |> validate_required([:discord_id, :username])
   end
 end

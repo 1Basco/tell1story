@@ -19,6 +19,11 @@ defmodule Tell1storyWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    live_session :rooms,
+      on_mount: Tell1storyWeb.Live.Auth do
+      live "/rooms", RoomsLive.Index, :index
+    end
   end
 
   scope "/auth", Tell1storyWeb do
